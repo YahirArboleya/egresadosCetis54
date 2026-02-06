@@ -1,0 +1,92 @@
+/* Contenedor principal */
+.box {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+}
+
+/* Sección de instrucciones */
+.instrucciones {
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.link-sep {
+    display: inline-block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+    border: 1px solid #007bff;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.link-sep:hover {
+    background: #007bff;
+    color: white;
+}
+
+/* Nota de advertencia */
+.note {
+    background: #fff3cd;
+    padding: 12px;
+    border-left: 4px solid #ffc107;
+    border-radius: 6px;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+/* Estilo de los Radio Buttons */
+.options-container {
+    display: flex;
+    flex-direction: column; /* Alinea uno debajo del otro */
+    gap: 12px;
+    margin: 15px 0;
+}
+
+.option {
+    display: flex;
+    align-items: center; /* Centra verticalmente el radio con el texto */
+    cursor: pointer;
+    font-size: 15px;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background 0.2s;
+}
+
+.option:hover {
+    background-color: #f8f9fa;
+}
+
+.option input[type="radio"] {
+    margin-right: 12px; /* Espacio entre el círculo y el texto */
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+/* Botón */
+.btn-continuar {
+    width: 100%;
+    padding: 10px;
+    background-color: #28a745;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-continuar:hover {
+    background-color: #218838;
+}
+
+.error {
+    color: #dc3545;
+    font-weight: bold;
+    margin-top: 15px;
+}

@@ -1,0 +1,67 @@
+/* Contenedor del texto legal */
+.privacy-content {
+    font-size: 14.5px;
+    color: #333;
+    line-height: 1.5;
+    text-align: justify;
+    margin-bottom: 25px;
+}
+
+.privacy-link-container {
+    background-color: #f1f3f5;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 15px;
+    text-align: center;
+}
+
+.pdf-link {
+    color: #a51d2d; /* Color guinda institucional opcional */
+    font-weight: bold;
+    text-decoration: underline;
+    font-size: 13px;
+}
+
+/* Alineación del Checkbox */
+.check {
+    display: flex;
+    align-items: center; /* Alinea el cuadro con el texto */
+    margin-top: 25px;
+    margin-bottom: 20px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.check input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+/* Botón de acción */
+.btn-primary {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #0056b3;
+}
+
+.error {
+    color: #d93025;
+    background: #fce8e6;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 15px;
+    font-size: 14px;
+}

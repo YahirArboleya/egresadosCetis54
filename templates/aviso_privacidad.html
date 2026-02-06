@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Aviso de Privacidad - CETIS 54</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/aviso.css') }}">
+</head>
+<body>
+
+<div class="box">
+    <h2>Aviso de Privacidad</h2>
+
+    <div class="privacy-content">
+        <p>
+            La <strong>Secretaría de Educación Pública</strong>, a través de la <strong>Dirección General de Educación Tecnológica Industrial y de Servicios (DGETI)</strong>, es la responsable del tratamiento de los datos personales y en cumplimiento de las normativas aplicables.
+        </p>
+
+        <p>
+            Los datos personales recabados serán utilizados exclusivamente para el trámite de duplicado de certificado. El CETIS No. 54 es responsable del uso y protección de sus datos personales.
+        </p>
+
+        <div class="privacy-link-container">
+            <p>Si deseas conocer nuestro aviso de privacidad integral, lo podrás consultar en el portal oficial:</p>
+            <a href="https://uemstis.sep.gob.mx/images/multimediaDgeti/quienesSomos/archivosDescarga/AVISO_DE_PRIVACIDAD_DGETI_2025.pdf" target="_blank" class="pdf-link">
+                Consultar Aviso de Privacidad.
+            </a>
+        </div>
+    </div>
+
+    <form method="POST">
+        <label class="option check">
+            <input type="checkbox" name="acepta" required>
+            <span>He leído y acepto el aviso de privacidad</span>
+        </label>
+
+        <button type="submit" class="btn-primary">Aceptar y continuar</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <p class="error">{{ messages[0] }}</p>
+      {% endif %}
+    {% endwith %}
+</div>
+
+</body>
+</html>

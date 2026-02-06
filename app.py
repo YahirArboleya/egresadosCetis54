@@ -65,15 +65,41 @@ def formulario():
 def verificacion():
     if request.method == 'POST':
         documentos = request.form.get('documentos')
-        presencial = request.form.get('presencial')
 
-        if documentos != 'si' or presencial != 'si':
+        if documentos != 'si':
             flash("Para continuar con el trámite en línea debes contar con los documentos oficiales en PDF.")
             return redirect(url_for('verificacion'))
 
-        return redirect(url_for('formulario'))
+        return redirect(url_for('pago_sep'))
 
     return render_template('verificacion.html')
+
+
+
+#====== PAGO SEP ==================
+@app.route('/pago', methods=['GET', 'POST'])
+def pago_sep():
+    if request.method == 'POST':
+        if request.form.get('pago') == 'si':
+            return redirect(url_for('aviso_privacidad'))
+        else:
+            flash("Si no cuentas con el pago, el trámite debe realizarse de manera presencial.")
+            return redirect(url_for('pago_sep'))
+
+    return render_template('pago_sep.html')
+
+
+#================= AVISO DE PRIVACIDAD ==================
+@app.route('/aviso-privacidad', methods=['GET', 'POST'])
+def aviso_privacidad():
+    if request.method == 'POST':
+        if request.form.get('acepta'):
+            return redirect(url_for('formulario'))
+        else:
+            flash("Debes aceptar el aviso de privacidad para continuar.")
+            return redirect(url_for('aviso_privacidad'))
+
+    return render_template('aviso_privacidad.html')
 
 
 # ================== REGISTRO ==================

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Pago SEP - CETIS 54</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pago.css') }}">
+</head>
+<body>
+
+<div class="box">
+    <h2>Pago del Trámite</h2>
+
+    <section class="instrucciones">
+        <p>Para solicitar el duplicado de tu certificado de estudios, es necesario llenar correctamente el <strong>formato E5</strong>, que corresponde al pago de derechos ante la SEP.</p>
+        
+        <div class="pasos">
+            <h3>Accede al formato E5</h3>
+            <p>Ingresa al siguiente enlace para generar tu ficha de pago:</p>
+            <a href="https://www.sep.gob.mx/work/appsite/e5_ene12/dpa/hojaayuda.html?institucion=dgeti" target="_blank" class="link-sep">
+                Generar Formato E5 (SEP)
+            </a>
+        </div>
+    </section>
+
+    <p class="note">
+        <strong>Importante:</strong> Si no cuentas con el comprobante de pago, no podras realizar el tramite.
+    </p>
+
+    <form method="POST" class="form-pago">
+        <p class="question">¿Ya realizaste el pago oficial?</p>
+
+        <div class="options-container">
+            <label class="option">
+                <input type="radio" name="pago" value="si" required>
+                <span>Sí, ya realicé el pago</span>
+            </label>
+
+            <label class="option">
+                <input type="radio" name="pago" value="no">
+                <span>No, aún no</span>
+            </label>
+        </div>
+
+        <button type="submit" class="btn-continuar">Continuar</button>
+    </form>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <p class="error">{{ messages[0] }}</p>
+      {% endif %}
+    {% endwith %}
+</div>
+
+</body>
+</html>
