@@ -83,7 +83,7 @@ def pago_sep():
         if request.form.get('pago') == 'si':
             return redirect(url_for('aviso_privacidad'))
         else:
-            flash("Si no cuentas con el pago, el trámite debe realizarse de manera presencial.")
+            flash("Si no cuentas con el pago, el trámite no podra realizarse.")
             return redirect(url_for('pago_sep'))
 
     return render_template('pago_sep.html')
