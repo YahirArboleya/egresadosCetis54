@@ -19,11 +19,23 @@ from reportlab.lib.units import cm
 # ===== EXCEL =====
 from openpyxl import Workbook
 
+# ===== ENV =====
+from dotenv import load_dotenv
+load_dotenv()
 
-# ================== CONFIGURACIÓN ==================
+# ================== APP ==================
 app = Flask(__name__)
-app.secret_key = 'clave_secreta'
+app.secret_key = os.getenv("SECRET_KEY")
 
+# ================== CONFIG MYSQL ==================
+app.config['MYSQL_HOST'] = os.getenv("DB_HOST")
+app.config['MYSQL_USER'] = os.getenv("DB_USER")
+app.config['MYSQL_PASSWORD'] = os.getenv("DB_PASSWORD")
+app.config['MYSQL_DB'] = os.getenv("DB_NAME")
+
+mysql = MySQL(app)
+
+# ================== CONFIG GENERAL ==================
 ADMIN_USER = "admin"
 ADMIN_PASS = "cetis54"
 
@@ -31,21 +43,16 @@ UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'root'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DB'] = 'cetis54_egresados'
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-mysql = MySQL(app)
-
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
-
-
-# ================== FUNCIONES AUX ==================
+# ================== UTILIDADES ==================
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
+# ================== HOME ==================
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 # ================== REGISTRO ==================
 @app.route('/registrar', methods=['POST'])
@@ -109,57 +116,53 @@ def registrar():
     flash("Solicitud registrada correctamente")
     return redirect(url_for('home'))
 
+# ================== LOGIN ==================
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        if request.form['usuario'] == ADMIN_USER and request.form['password'] == ADMIN_PASS:
+            session['admin'] = True
+            return redirect(url_for('admin_panel'))
+        flash("Credenciales incorrectas")
+    return render_template('login.html')
 
-# ================== PANEL ADMIN ==================
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login'))
+
+# ================== ADMIN ==================
 @app.route('/admin')
 def admin_panel():
     if not session.get('admin'):
         return redirect(url_for('login'))
 
-    estatus_filtro = request.args.get('estatus')
+    estatus = request.args.get('estatus')
     cur = mysql.connection.cursor()
 
-    # Contadores
     cur.execute("SELECT estatus_tramite, COUNT(*) FROM solicitudes GROUP BY estatus_tramite")
-    conteos = cur.fetchall()
+    contadores = {e: 0 for e in ['Pendiente', 'En revisión', 'Aprobado', 'Rechazado']}
+    for e, t in cur.fetchall():
+        contadores[e] = t
 
-    contadores = {
-        'Pendiente': 0,
-        'En revisión': 0,
-        'Aprobado': 0,
-        'Rechazado': 0
-    }
-
-    for est, total in conteos:
-        contadores[est] = total
-
-    # Listado
-    if estatus_filtro:
+    if estatus:
         cur.execute("""
             SELECT id, nombre_completo, curp, numero_control,
                    especialidad, ruta_pdf_pago, ruta_pdf_escolar, estatus_tramite
-            FROM solicitudes
-            WHERE estatus_tramite = %s
+            FROM solicitudes WHERE estatus_tramite=%s
             ORDER BY fecha_registro DESC
-        """, (estatus_filtro,))
+        """, (estatus,))
     else:
         cur.execute("""
             SELECT id, nombre_completo, curp, numero_control,
                    especialidad, ruta_pdf_pago, ruta_pdf_escolar, estatus_tramite
-            FROM solicitudes
-            ORDER BY fecha_registro DESC
+            FROM solicitudes ORDER BY fecha_registro DESC
         """)
 
     datos = cur.fetchall()
     cur.close()
 
-    return render_template(
-        'admin.html',
-        solicitudes=datos,
-        estatus=estatus_filtro,
-        contadores=contadores
-    )
-
+    return render_template("admin.html", solicitudes=datos, contadores=contadores, estatus=estatus)
 
 # ================== ACTUALIZAR ESTATUS ==================
 @app.route('/actualizar_estatus', methods=['POST'])
@@ -169,7 +172,7 @@ def actualizar_estatus():
 
     cur = mysql.connection.cursor()
     cur.execute(
-        "UPDATE solicitudes SET estatus_tramite = %s WHERE id = %s",
+        "UPDATE solicitudes SET estatus_tramite=%s WHERE id=%s",
         (request.form['estatus'], request.form['id'])
     )
     mysql.connection.commit()
@@ -177,37 +180,12 @@ def actualizar_estatus():
 
     return redirect(url_for('admin_panel'))
 
-
-# ================== LOGIN ==================
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        if request.form['usuario'] == ADMIN_USER and request.form['password'] == ADMIN_PASS:
-            session['admin'] = True
-            return redirect(url_for('admin_panel'))
-        flash("Credenciales incorrectas")
-
-    return render_template('login.html')
-
-
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('login'))
-
-
-# ================== ARCHIVOS ==================
+# ================== DESCARGAR ARCHIVOS ==================
 @app.route('/uploads/<filename>')
 def descargar_archivo(filename):
     if not session.get('admin'):
         return redirect(url_for('login'))
     return send_from_directory(UPLOAD_FOLDER, filename)
-
-
-@app.route('/')
-def home():
-    return render_template('index.html')
-
 
 # ================== EXPORTAR PDF ==================
 @app.route('/exportar_pdf')
@@ -215,64 +193,34 @@ def exportar_pdf():
     if not session.get('admin'):
         return redirect(url_for('login'))
 
-    estatus = request.args.get('estatus')
     cur = mysql.connection.cursor()
-
-    if estatus:
-        cur.execute("""
-            SELECT nombre_completo, curp, numero_control,
-                   especialidad, estatus_tramite
-            FROM solicitudes WHERE estatus_tramite = %s
-        """, (estatus,))
-    else:
-        cur.execute("""
-            SELECT nombre_completo, curp, numero_control,
-                   especialidad, estatus_tramite
-            FROM solicitudes
-        """)
-
+    cur.execute("""
+        SELECT nombre_completo, curp, numero_control, especialidad, estatus_tramite
+        FROM solicitudes
+    """)
     datos = cur.fetchall()
     cur.close()
 
-    ruta_pdf = os.path.join(UPLOAD_FOLDER, "solicitudes_cetis54.pdf")
-    doc = SimpleDocTemplate(ruta_pdf, pagesize=A4,
-                            rightMargin=2*cm, leftMargin=2*cm,
-                            topMargin=2*cm, bottomMargin=2*cm)
+    ruta = os.path.join(UPLOAD_FOLDER, "solicitudes.pdf")
+    doc = SimpleDocTemplate(ruta, pagesize=A4)
 
     estilos = getSampleStyleSheet()
     elementos = [
         Paragraph("<b>CETIS 54</b><br/>Reporte de Solicitudes", estilos['Title']),
-        Paragraph(f"Fecha: {datetime.now().strftime('%d/%m/%Y %H:%M')}", estilos['Normal']),
-        Paragraph("<br/>", estilos['Normal'])
+        Paragraph(datetime.now().strftime("%d/%m/%Y %H:%M"), estilos['Normal'])
     ]
 
-    tabla_datos = [["Nombre", "CURP", "Control", "Especialidad", "Estatus"]]
-    tabla_datos.extend(datos)
+    tabla = Table([["Nombre","CURP","Control","Especialidad","Estatus"]] + datos)
+    tabla.setStyle(TableStyle([
+        ('GRID',(0,0),(-1,-1),0.5,colors.grey),
+        ('BACKGROUND',(0,0),(-1,0),colors.HexColor("#621132")),
+        ('TEXTCOLOR',(0,0),(-1,0),colors.white)
+    ]))
 
-    tabla = Table(tabla_datos, colWidths=[5*cm, 3*cm, 3*cm, 3*cm, 3*cm])
-
-    estilo = TableStyle([
-        ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#621132")),
-        ('TEXTCOLOR', (0,0), (-1,0), colors.white),
-        ('GRID', (0,0), (-1,-1), 0.5, colors.grey),
-        ('FONTNAME', (0,0), (-1,0), 'Helvetica-Bold')
-    ])
-
-    for i, fila in enumerate(tabla_datos[1:], start=1):
-        colores = {
-            "Pendiente": "#ffe08a",
-            "En revisión": "#9fd3e6",
-            "Aprobado": "#9be7b0",
-            "Rechazado": "#f5a3a3"
-        }
-        estilo.add('BACKGROUND', (0,i), (-1,i), colors.HexColor(colores[fila[4]]))
-
-    tabla.setStyle(estilo)
     elementos.append(tabla)
-
     doc.build(elementos)
-    return send_from_directory(UPLOAD_FOLDER, "solicitudes_cetis54.pdf", as_attachment=True)
 
+    return send_from_directory(UPLOAD_FOLDER, "solicitudes.pdf", as_attachment=True)
 
 # ================== EXPORTAR EXCEL ==================
 @app.route('/exportar_excel')
@@ -280,30 +228,17 @@ def exportar_excel():
     if not session.get('admin'):
         return redirect(url_for('login'))
 
-    estatus = request.args.get('estatus')
     cur = mysql.connection.cursor()
-
-    if estatus:
-        cur.execute("""
-            SELECT nombre_completo, curp, numero_control,
-                   especialidad, estatus_tramite
-            FROM solicitudes WHERE estatus_tramite = %s
-        """, (estatus,))
-    else:
-        cur.execute("""
-            SELECT nombre_completo, curp, numero_control,
-                   especialidad, estatus_tramite
-            FROM solicitudes
-        """)
-
+    cur.execute("""
+        SELECT nombre_completo, curp, numero_control, especialidad, estatus_tramite
+        FROM solicitudes
+    """)
     datos = cur.fetchall()
     cur.close()
 
     wb = Workbook()
     ws = wb.active
-    ws.title = "Solicitudes"
-
-    ws.append(["Nombre", "CURP", "No. Control", "Especialidad", "Estatus"])
+    ws.append(["Nombre","CURP","Control","Especialidad","Estatus"])
     for fila in datos:
         ws.append(fila)
 
@@ -311,13 +246,11 @@ def exportar_excel():
     wb.save(stream)
     stream.seek(0)
 
-    return send_file(
-        stream,
-        as_attachment=True,
-        download_name="solicitudes_duplicados.xlsx",
+    return send_file(stream, as_attachment=True,
+        download_name="solicitudes.xlsx",
         mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
     )
 
-
+# ================== RUN ==================
 if __name__ == '__main__':
     app.run(debug=True)
