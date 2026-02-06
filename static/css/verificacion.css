@@ -1,0 +1,53 @@
+.container {
+    max-width: 700px;
+    margin: 60px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+}
+
+.intro {
+    margin-bottom: 20px;
+    color: #444;
+}
+
+.question {
+    margin-bottom: 25px;
+}
+
+.question p {
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.question label {
+    display: flex;            
+    align-items: center;      
+    justify-content: flex-start; 
+    width: fit-content;      
+    gap: 12px;            
+    margin-left: 10px;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+
+.question input[type="radio"] {
+    margin: 0;                
+    width: 18px;              
+    height: 18px;             
+    flex-shrink: 0;           
+}
+
+.alert {
+    background: #f5a3a3;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-weight: 600;
+}
+
+.nota {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #666;
+}

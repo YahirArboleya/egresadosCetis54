@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Duplicado de Certificado - CETIS 54</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/inicio.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <header class="header">
+        <h1>Trámite de Duplicado de Certificado</h1>
+        <p class="subtitle">Centro de Estudios Tecnológicos Industrial y de Servicios No. 54</p>
+    </header>
+
+    <section class="card">
+        <h2>¿Para qué es este trámite?</h2>
+        <p>
+            Este portal permite a los <strong>egresados del CETIS 54</strong> solicitar en línea
+            el duplicado de su certificado de estudios, siempre y cuando cuenten con la
+            documentación oficial requerida.
+        </p>
+    </section>
+
+    <section class="card warning">
+        <h2>⚠️ Importante</h2>
+        <ul>
+            <li>Debes contar con comprobante de pago en PDF</li>
+            <li>Debes contar con un documento escolar oficial en PDF</li>
+            <li>La información proporcionada debe ser verídica</li>
+        </ul>
+    </section>
+
+    <section class="card info">
+        <h2>¿Cuándo NO usar este formulario?</h2>
+        <p>
+            Si no cuentas con los documentos solicitados o tienes alguna situación especial,
+            deberás realizar el trámite de forma <strong>presencial</strong> en el área de
+            control escolar del plantel.
+        </p>
+    </section>
+
+    <div class="actions">
+        <a href="{{ url_for('verificacion') }}" class="btn-primary">
+            Iniciar trámite
+        </a>
+    </div>
+
+</div>
+
+</body>
+</html>

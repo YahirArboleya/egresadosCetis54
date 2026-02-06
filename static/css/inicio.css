@@ -1,0 +1,73 @@
+.container {
+    max-width: 900px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header h1 {
+    color: #621132;
+    font-size: 2.2rem;
+}
+
+.subtitle {
+    color: #555;
+    font-size: 1rem;
+}
+
+.card {
+    background: #ffffff;
+    padding: 25px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.card h2 {
+    margin-bottom: 10px;
+    color: #621132;
+}
+
+.card p,
+.card ul {
+    color: #333;
+    line-height: 1.6;
+}
+
+.card ul {
+    padding-left: 20px;
+}
+
+.card.warning {
+    border-left: 6px solid #BC955C;
+    background: #fff8ec;
+}
+
+.card.info {
+    border-left: 6px solid #1D3557;
+    background: #f3f6fa;
+}
+
+.actions {
+    text-align: center;
+    margin-top: 30px;
+}
+
+.btn-primary {
+    background: #621132;
+    color: white;
+    padding: 14px 30px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #4e0f28;
+}

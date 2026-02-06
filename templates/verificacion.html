@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Verificación de Requisitos - CETIS 54</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/verificacion.css') }}">
+</head>
+<body>
+
+<div class="container">
+
+    <h1>Trámite de Duplicado de Certificado</h1>
+    <p class="intro">
+        Antes de iniciar el trámite en línea, es importante confirmar que cuentas con los requisitos necesarios.
+    </p>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="alert">
+            {{ messages[0] }}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+
+        <div class="question">
+            <p>📄 ¿Cuentas con tus documentos oficiales en formato PDF?</p>
+            <label>
+                <input type="radio" name="documentos" value="si" required>
+                Sí, los tengo listos
+            </label>
+            <label>
+                <input type="radio" name="documentos" value="no">
+                No
+            </label>
+        </div>
+
+        <button type="submit" class="btn-primary">
+            Continuar
+        </button>
+
+    </form>
+
+    <p class="nota">
+        Si no cuentas con los documentos necesarios, deberás acudir directamente al plantel.
+    </p>
+
+</div>
+
+</body>
+</html>

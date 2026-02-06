@@ -52,7 +52,29 @@ def allowed_file(filename):
 # ================== HOME ==================
 @app.route('/')
 def home():
+    return render_template('inicio.html')
+
+#================ FORMULARIO ==================
+@app.route('/formulario')
+def formulario():
     return render_template('index.html')
+
+
+#============== VERIFICACIÓN ==================
+@app.route('/verificacion', methods=['GET', 'POST'])
+def verificacion():
+    if request.method == 'POST':
+        documentos = request.form.get('documentos')
+        presencial = request.form.get('presencial')
+
+        if documentos != 'si' or presencial != 'si':
+            flash("Para continuar con el trámite en línea debes contar con los documentos oficiales en PDF.")
+            return redirect(url_for('verificacion'))
+
+        return redirect(url_for('formulario'))
+
+    return render_template('verificacion.html')
+
 
 # ================== REGISTRO ==================
 @app.route('/registrar', methods=['POST'])
@@ -79,7 +101,7 @@ def registrar():
 
     if not (allowed_file(file_pago.filename) and allowed_file(file_escolar.filename)):
         flash("Archivos inválidos")
-        return redirect(url_for('home'))
+        return redirect(url_for('formulario'))
 
     nom_pago = secure_filename(f"{curp}_PAGO.pdf")
     nom_escolar = secure_filename(f"{curp}_ESCOLAR.pdf")
@@ -93,7 +115,7 @@ def registrar():
     if cur.fetchone():
         cur.close()
         flash("Esta CURP ya tiene una solicitud registrada")
-        return redirect(url_for('home'))
+        return redirect(url_for('formulario'))
 
     cur.execute("""
         INSERT INTO solicitudes (
@@ -114,7 +136,7 @@ def registrar():
     cur.close()
 
     flash("Solicitud registrada correctamente")
-    return redirect(url_for('home'))
+    return redirect(url_for('formulario'))
 
 # ================== LOGIN ==================
 @app.route('/login', methods=['GET', 'POST'])
