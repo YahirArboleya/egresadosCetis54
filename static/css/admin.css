@@ -1,0 +1,115 @@
+/* ===== CONTENEDOR GENERAL ===== */
+.admin-container {
+    max-width: 1200px;
+    margin: auto;
+}
+
+/* ===== HEADER ===== */
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logout {
+    color: #621132;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* ===== FILTRO Y CONTADORES ===== */
+.filters {
+    margin: 25px 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+}
+
+.contadores {
+    display: flex;
+    gap: 15px;
+}
+
+.card {
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.pendiente { background: #ffe08a; }
+.revision  { background: #9fd3e6; }
+.aprobado  { background: #9be7b0; }
+.rechazado { background: #f5a3a3; }
+
+/* ===== BOTONES EXPORTAR ===== */
+.export-buttons {
+    margin: 20px 0;
+    display: flex;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.btn-pdf {
+    background: #621132;
+    color: white;
+}
+
+.btn-excel {
+    background: #1D6F42;
+    color: white;
+}
+
+/* ===== TABLA ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th {
+    background: #621132;
+    color: white;
+    padding: 12px;
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Hover */
+tbody tr:hover {
+    filter: brightness(0.95);
+}
+
+/* ===== LINKS ===== */
+.btn-descarga {
+    color: #BC955C;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+/* ===== SELECT ===== */
+select {
+    padding: 6px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+    .filters {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .contadores {
+        flex-wrap: wrap;
+    }
+}

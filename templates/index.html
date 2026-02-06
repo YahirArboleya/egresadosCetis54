@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Trámite de Duplicado de Certificado - CETIS 54</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>Portal de Egresados - CETIS 54</h1>
+
+    <form action="/registrar" method="POST" enctype="multipart/form-data">
+
+        <h2>Datos Personales</h2>
+        <label>Apellido Paterno</label>
+        <input type="text" name="paterno" required>
+
+        <label>Apellido Materno</label>
+        <input type="text" name="materno" required>
+
+        <label>Nombre(s)</label>
+        <input type="text" name="nombre" required>
+
+        <label>CURP</label>
+        <input type="text" name="curp" maxlength="18" required>
+
+        <label>Correo Electrónico</label>
+        <input type="email" name="correo" required>
+
+        <label>Teléfono Celular</label>
+        <input type="text" name="telefono" required>
+
+        <h2>Datos Académicos</h2>
+        <label>Número de Control</label>
+        <input type="text" name="control" required>
+
+        <label>Especialidad</label>
+        <select name="especialidad" required>
+            <option value="">Seleccione...</option>
+            <option value="PROGRAMACIÓN">PROGRAMACIÓN</option>
+            <option value="OFIMÁTICA">OFIMÁTICA</option>
+            <option value="CONTABILIDAD">CONTABILIDAD</option>
+            <option value="INFORMÁTICA">INFORMÁTICA</option>
+            <option value="CONSTRUCCIÓN">CONSTRUCCIÓN</option>
+        </select>
+
+        <label>Turno</label>
+        <select name="turno" required>
+            <option value="">Seleccione...</option>
+            <option value="MATUTINO">MATUTINO</option>
+            <option value="VESPERTINO">VESPERTINO</option>
+        </select>
+
+        <label>Generación (ej. 2020-2023)</label>
+        <input type="text" name="generacion" required>
+
+        <h2>Pago</h2>
+        <label>Banco</label>
+        <input type="text" name="banco" required>
+
+        <label>Llave de Pago</label>
+        <input type="text" name="llave" required>
+
+        <label>Monto Pagado</label>
+        <input type="number" step="0.01" name="monto" required>
+
+        <h2>Documentos PDF</h2>
+        <label>Comprobante de Pago</label>
+        <input type="file" name="file_pago" accept="application/pdf" required>
+
+        <label>Documento Escolar</label>
+        <input type="file" name="file_escolar" accept="application/pdf" required>
+
+        <button type="submit">Finalizar Registro</button>
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,60 @@
+/* ===== CONTENEDOR LOGIN ===== */
+.box {
+    width: 350px;
+    margin: 100px auto;
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== TÍTULO ===== */
+.box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #621132;
+    font-weight: 700;
+}
+
+/* ===== INPUTS ===== */
+.box input {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.box input:focus {
+    outline: none;
+    border-color: #621132;
+}
+
+/* ===== BOTÓN ===== */
+.box button {
+    width: 100%;
+    margin-top: 20px;
+    padding: 12px;
+    background: #621132;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.box button:hover {
+    background: #4e0e27;
+}
+
+/* ===== MENSAJE ERROR ===== */
+.box p {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 14px;
+}

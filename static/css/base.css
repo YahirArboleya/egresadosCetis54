@@ -1,0 +1,94 @@
+:root {
+    --vino: #621132;
+    --dorado: #BC955C;
+    --gris-fondo: #f4f6f8;
+    --gris-claro: #e0e0e0;
+    --texto: #333;
+    --blanco: #ffffff;
+}
+
+/* ===== RESET BÁSICO ===== */
+* {
+    box-sizing: border-box;
+}
+
+/* ===== CUERPO GENERAL ===== */
+body {
+    font-family: 'Inter', system-ui, sans-serif;
+    background-color: var(--gris-fondo);
+    color: var(--texto);
+    margin: 0;
+}
+
+/* ===== CONTENEDORES ===== */
+.container,
+.box {
+    max-width: 900px;
+    background: var(--blanco);
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+/* ===== TÍTULOS ===== */
+h1 {
+    color: var(--vino);
+    margin-bottom: 10px;
+}
+
+h2 {
+    color: var(--dorado);
+    margin-top: 30px;
+}
+
+/* ===== FORMULARIOS ===== */
+label {
+    font-weight: 600;
+    margin-top: 10px;
+    display: block;
+}
+
+input,
+select {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 8px;
+    border: 1px solid var(--gris-claro);
+    margin-top: 5px;
+    margin-bottom: 15px;
+    font-size: 15px;
+}
+
+input:focus,
+select:focus {
+    outline: none;
+    border-color: var(--vino);
+}
+
+/* ===== BOTONES ===== */
+button {
+    background: var(--vino);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+button:hover {
+    background: #4b0d25;
+}
+
+/* ===== LINKS ===== */
+a {
+    color: var(--vino);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+a:hover {
+    text-decoration: underline;
+}
