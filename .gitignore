@@ -1,0 +1,26 @@
+# ===== Python =====
+__pycache__/
+*.pyc
+*.pyo
+
+# ===== Entorno virtual =====
+venv/
+.env
+
+# ===== Flask =====
+instance/
+*.log
+
+# ===== Base de datos (por si usas locales) =====
+*.sqlite3
+
+# ===== Archivos temporales =====
+*.tmp
+*.bak
+
+# ===== VS Code =====
+.vscode/
+
+# ===== Sistema operativo =====
+.DS_Store
+Thumbs.db
