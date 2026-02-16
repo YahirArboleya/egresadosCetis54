@@ -1,60 +1,109 @@
-/* ===== CONTENEDOR LOGIN ===== */
-.box {
-    width: 350px;
-    margin: 100px auto;
-    background: #ffffff;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+/* ===== FONDO GENERAL ===== */
+.login-body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #621132, #8a1c3b);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-/* ===== TÍTULO ===== */
-.box h2 {
+/* ===== CONTENEDOR ===== */
+.login-container {
     text-align: center;
-    margin-bottom: 20px;
-    color: #621132;
+    color: white;
+}
+
+/* ===== LOGO ===== */
+.logo-section img {
+    width: 110px;
+    margin-bottom: 15px;
+    filter: brightness(0) invert(1);
+}
+
+.logo-section h1 {
+    margin: 0;
+    font-size: 26px;
     font-weight: 700;
+    letter-spacing: 1px;
+    color: white;
+}
+
+.logo-section p {
+    margin-top: 5px;
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* ===== CAJA LOGIN ===== */
+.login-box {
+    background: white;
+    margin-top: 25px;
+    padding: 35px;
+    border-radius: 10px;
+    width: 340px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    text-align: left;
+    color: #333;
+}
+
+.login-box h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #621132;
 }
 
 /* ===== INPUTS ===== */
-.box input {
+.login-box input {
     width: 100%;
     padding: 12px;
-    margin-top: 12px;
-    border: 1px solid #ccc;
+    margin-bottom: 15px;
     border-radius: 6px;
+    border: 1px solid #ccc;
     font-size: 14px;
+    transition: all 0.3s ease;
 }
 
-.box input:focus {
-    outline: none;
+.login-box input:focus {
     border-color: #621132;
+    outline: none;
+    box-shadow: 0 0 5px rgba(98,17,50,0.3);
 }
 
 /* ===== BOTÓN ===== */
-.box button {
+.login-box button {
     width: 100%;
-    margin-top: 20px;
     padding: 12px;
-    background: #621132;
-    color: white;
     border: none;
     border-radius: 6px;
-    font-size: 15px;
+    background: #621132;
+    color: white;
     font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.3s ease;
 }
 
-.box button:hover {
-    background: #4e0e27;
+.login-box button:hover {
+    background: #8a1c3b;
 }
 
 /* ===== MENSAJE ERROR ===== */
-.box p {
-    background: #f8d7da;
-    color: #721c24;
+.error-message {
+    background: #ffe5e5;
+    color: #a10000;
     padding: 10px;
-    border-radius: 6px;
+    border-radius: 5px;
     margin-bottom: 15px;
+    font-size: 13px;
     text-align: center;
-    font-size: 14px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+    .login-box {
+        width: 90%;
+        padding: 25px;
+    }
 }
