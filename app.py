@@ -241,24 +241,50 @@ def exportar_pdf():
     if not session.get('admin'):
         return redirect(url_for('login'))
 
+    estatus = request.args.get('estatus')
+
     cur = mysql.connection.cursor()
-    cur.execute("""
-        SELECT nombre_completo, curp, numero_control, especialidad, estatus_tramite
-        FROM solicitudes
-    """)
+
+    if estatus:
+        cur.execute("""
+            SELECT nombre_completo, curp, numero_control, especialidad, estatus_tramite
+            FROM solicitudes
+            WHERE estatus_tramite = %s
+            ORDER BY fecha_registro DESC
+        """, (estatus,))
+    else:
+        cur.execute("""
+            SELECT nombre_completo, curp, numero_control, especialidad, estatus_tramite
+            FROM solicitudes
+            ORDER BY fecha_registro DESC
+        """)
+
     datos = cur.fetchall()
     cur.close()
+
+    datos = [list(fila) for fila in datos]
 
     ruta = os.path.join(UPLOAD_FOLDER, "solicitudes.pdf")
     doc = SimpleDocTemplate(ruta, pagesize=A4)
 
     estilos = getSampleStyleSheet()
-    elementos = [
-        Paragraph("<b>CETIS 54</b><br/>Reporte de Solicitudes", estilos['Title']),
-        Paragraph(datetime.now().strftime("%d/%m/%Y %H:%M"), estilos['Normal'])
-    ]
+    elementos = []
 
-    tabla = Table([["Nombre","CURP","Control","Especialidad","Estatus"]] + datos)
+    titulo = "Reporte de Solicitudes"
+    if estatus:
+        titulo += f" - {estatus}"
+
+    elementos.append(
+        Paragraph(f"<b>CETIS 54</b><br/>{titulo}", estilos['Title'])
+    )
+    elementos.append(
+        Paragraph(datetime.now().strftime("%d/%m/%Y %H:%M"), estilos['Normal'])
+    )
+
+    encabezados = ["Nombre", "CURP", "Control", "Especialidad", "Estatus"]
+    tabla_datos = [encabezados] + datos
+
+    tabla = Table(tabla_datos)
     tabla.setStyle(TableStyle([
         ('GRID',(0,0),(-1,-1),0.5,colors.grey),
         ('BACKGROUND',(0,0),(-1,0),colors.HexColor("#621132")),
@@ -269,6 +295,7 @@ def exportar_pdf():
     doc.build(elementos)
 
     return send_from_directory(UPLOAD_FOLDER, "solicitudes.pdf", as_attachment=True)
+
 
 # ================== EXPORTAR EXCEL ==================
 @app.route('/exportar_excel')
