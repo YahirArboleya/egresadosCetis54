@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Duplicado de Certificado - CETIS 54</title>
+    <title>Duplicado de Certificado | CETIS 54</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
@@ -10,15 +10,21 @@
 </head>
 <body>
 
+<!-- ===== BARRA SUPERIOR INSTITUCIONAL ===== -->
+<div class="top-bar"></div>
+
 <div class="container">
 
     <header class="header">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo CETIS 54">
         <h1>Trámite de Duplicado de Certificado</h1>
-        <p class="subtitle">Centro de Estudios Tecnológicos Industrial y de Servicios No. 54</p>
+        <p class="subtitle">
+            Centro de Estudios Tecnológicos Industrial y de Servicios No. 54
+        </p>
     </header>
 
     <section class="card">
-        <h2>¿Para qué es este trámite?</h2>
+        <h2>Información del trámite</h2>
         <p>
             Este portal permite a los <strong>egresados del CETIS 54</strong> solicitar en línea
             el duplicado de su certificado de estudios, siempre y cuando cuenten con la
@@ -27,20 +33,19 @@
     </section>
 
     <section class="card warning">
-        <h2>⚠️ Importante</h2>
+        <h2>Requisitos</h2>
         <ul>
-            <li>Debes contar con comprobante de pago en PDF</li>
-            <li>Debes contar con un documento escolar oficial en PDF</li>
-            <li>La información proporcionada debe ser verídica</li>
+            <li>Comprobante de pago en formato PDF</li>
+            <li>Documento escolar oficial en formato PDF</li>
+            <li>Información verídica y completa</li>
         </ul>
     </section>
 
     <section class="card info">
-        <h2>¿Cuándo NO usar este formulario?</h2>
+        <h2>Casos especiales</h2>
         <p>
-            Si no cuentas con los documentos solicitados o tienes alguna situación especial,
-            deberás realizar el trámite de forma <strong>presencial</strong> en el área de
-            control escolar del plantel.
+            Si no cuentas con los documentos solicitados o presentas alguna situación especial,
+            deberás acudir al área de egresados del plantel para recibir orientación personalizada.
         </p>
     </section>
 
@@ -51,6 +56,11 @@
     </div>
 
 </div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer">
+    <p>CETIS 54 · Sistema de Gestión Administrativa</p>
+</footer>
 
 </body>
 </html>
