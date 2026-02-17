@@ -8,86 +8,135 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
 </head>
 <body>
-    <h1>Gestión de Egresados - Control de Duplicados</h1>
-    <a href="/logout" style="float:right; color:#621132;">Cerrar sesión</a>
 
-    <form method="GET" action="/admin">
-    <label for="estatus"><strong>Filtrar por estatus:</strong></label>
-    
-    <select name="estatus" onchange="this.form.submit()">
-        <option value="">Todos</option>
-        <option value="Pendiente" {% if estatus=='Pendiente' %}selected{% endif %}>Pendiente</option>
-        <option value="En revisión" {% if estatus=='En revisión' %}selected{% endif %}>En revisión</option>
-        <option value="Aprobado" {% if estatus=='Aprobado' %}selected{% endif %}>Aprobado</option>
-        <option value="Rechazado" {% if estatus=='Rechazado' %}selected{% endif %}>Rechazado</option>
-    </select>
+<div class="admin-container">
 
-    <div style="display:flex; gap:20px; margin:20px 0;">
-    <div><strong>🟠 Pendientes:</strong> {{ contadores['Pendiente'] }}</div>
-    <div><strong>🔵 En revisión:</strong> {{ contadores['En revisión'] }}</div>
-    <div><strong>🟢 Aprobados:</strong> {{ contadores['Aprobado'] }}</div>
-    <div><strong>🔴 Rechazados:</strong> {{ contadores['Rechazado'] }}</div>
+    <!-- HEADER -->
+    <div class="admin-header">
+        <h1>Panel Administrativo</h1>
+        <a href="/logout" class="logout">Cerrar sesión</a>
     </div>
 
-
-    </form>
-
-    <div style="margin:20px 0; display:flex; gap:10px;">
-    <form action="/exportar_pdf" method="GET">
-        {% if estatus %}<input type="hidden" name="estatus" value="{{ estatus }}">{% endif %}
-        <button type="submit" class="btn-pdf">📄 Exportar PDF</button>
-    </form>
-
-    <form action="/exportar_excel" method="GET">
-        {% if estatus %}<input type="hidden" name="estatus" value="{{ estatus }}">{% endif %}
-        <button type="submit" class="btn-excel">📊 Exportar Excel</button>
-    </form>
+    <!-- CONTADORES -->
+    <div class="contadores">
+        <div class="card pendiente">
+            <span>Pendientes</span>
+            <strong>{{ contadores['Pendiente'] }}</strong>
+        </div>
+        <div class="card revision">
+            <span>En revisión</span>
+            <strong>{{ contadores['En revisión'] }}</strong>
+        </div>
+        <div class="card aprobado">
+            <span>Aprobados</span>
+            <strong>{{ contadores['Aprobado'] }}</strong>
+        </div>
+        <div class="card rechazado">
+            <span>Rechazados</span>
+            <strong>{{ contadores['Rechazado'] }}</strong>
+        </div>
     </div>
 
-    <table>
-    <thead>
-        <tr>
-            <th>Nombre</th>
-            <th>CURP</th>
-            <th>Control</th>
-            <th>Documentos</th>
-            <th>Estatus</th>
-            <th>Acciones</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for sol in solicitudes %}
-<tr class="
-{% if sol[7] == 'Pendiente' %}pendiente
-{% elif sol[7] == 'En revisión' %}revision
-{% elif sol[7] == 'Aprobado' %}aprobado
-{% elif sol[7] == 'Rechazado' %}rechazado
-{% endif %}
-">
+    <!-- FILTROS -->
+    <div class="filters">
+        <form method="GET" action="/admin">
+            <label><strong>Filtrar por estatus:</strong></label>
+            <select name="estatus" onchange="this.form.submit()">
+                <option value="">Todos</option>
+                <option value="Pendiente" {% if estatus=='Pendiente' %}selected{% endif %}>Pendiente</option>
+                <option value="En revisión" {% if estatus=='En revisión' %}selected{% endif %}>En revisión</option>
+                <option value="Aprobado" {% if estatus=='Aprobado' %}selected{% endif %}>Aprobado</option>
+                <option value="Rechazado" {% if estatus=='Rechazado' %}selected{% endif %}>Rechazado</option>
+            </select>
+        </form>
 
-            <td>{{ sol[1] }}</td>
-            <td>{{ sol[2] }}</td>
-            <td>{{ sol[3] }}</td>
-            <td>
-                <a href="/uploads/{{ sol[5] }}" target="_blank" class="btn-descarga">Váucher</a> |
-                <a href="/uploads/{{ sol[6] }}" target="_blank" class="btn-descarga">Académico</a>
-            </td>
-<td><strong>{{ sol[7] }}</strong></td>
-            <td>
-                <form action="/actualizar_estatus" method="POST">
-                    <input type="hidden" name="id" value="{{ sol[0] }}">
-                    <select name="estatus" onchange="this.form.submit()">
-                        <option value="Pendiente" {% if sol[7]=='Pendiente' %}selected{% endif %}>Pendiente</option>
-                        <option value="En revisión" {% if sol[7]=='En revisión' %}selected{% endif %}>En revisión</option>
-                        <option value="Aprobado" {% if sol[7]=='Aprobado' %}selected{% endif %}>Aprobado</option>
-                        <option value="Rechazado" {% if sol[7]=='Rechazado' %}selected{% endif %}>Rechazado</option>
-                    </select>
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+        <div class="search-box">
+            <input type="text" id="buscador" placeholder="🔎 Buscar por nombre, CURP o control...">
+        </div>
+
+
+        <div class="export-buttons">
+            <form action="/exportar_pdf" method="GET">
+                {% if estatus %}<input type="hidden" name="estatus" value="{{ estatus }}">{% endif %}
+                <button type="submit" class="btn btn-pdf">📄 PDF</button>
+            </form>
+
+            <form action="/exportar_excel" method="GET">
+                {% if estatus %}<input type="hidden" name="estatus" value="{{ estatus }}">{% endif %}
+                <button type="submit" class="btn btn-excel">📊 Excel</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- TABLA -->
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>CURP</th>
+                    <th>Control</th>
+                    <th>Documentos</th>
+                    <th>Estatus</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sol in solicitudes %}
+                <tr>
+                    <td>{{ sol[1] }}</td>
+                    <td>{{ sol[2] }}</td>
+                    <td>{{ sol[3] }}</td>
+                    <td>
+                        <a href="/uploads/{{ sol[5] }}" target="_blank" class="btn-descarga">Váucher</a>
+                        <a href="/uploads/{{ sol[6] }}" target="_blank" class="btn-descarga">Académico</a>
+                    </td>
+                    <td>
+                        <span class="badge 
+                        {% if sol[7]=='Pendiente' %}badge-pendiente
+                        {% elif sol[7]=='En revisión' %}badge-revision
+                        {% elif sol[7]=='Aprobado' %}badge-aprobado
+                        {% elif sol[7]=='Rechazado' %}badge-rechazado
+                        {% endif %}">
+                            {{ sol[7] }}
+                        </span>
+                    </td>
+                    <td>
+                        <form action="/actualizar_estatus" method="POST">
+                            <input type="hidden" name="id" value="{{ sol[0] }}">
+                            <select name="estatus" onchange="this.form.submit()">
+                                <option value="Pendiente" {% if sol[7]=='Pendiente' %}selected{% endif %}>Pendiente</option>
+                                <option value="En revisión" {% if sol[7]=='En revisión' %}selected{% endif %}>En revisión</option>
+                                <option value="Aprobado" {% if sol[7]=='Aprobado' %}selected{% endif %}>Aprobado</option>
+                                <option value="Rechazado" {% if sol[7]=='Rechazado' %}selected{% endif %}>Rechazado</option>
+                            </select>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script>
+document.getElementById("buscador").addEventListener("keyup", function() {
+    let filtro = this.value.toLowerCase();
+    let filas = document.querySelectorAll("tbody tr");
+
+    filas.forEach(function(fila) {
+        let texto = fila.innerText.toLowerCase();
+
+        if (texto.includes(filtro)) {
+            fila.style.display = "";
+        } else {
+            fila.style.display = "none";
+        }
+    });
+});
+</script>
+
 
 </body>
 </html>
