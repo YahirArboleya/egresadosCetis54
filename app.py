@@ -264,9 +264,10 @@ def exportar_pdf():
 
     datos = [list(fila) for fila in datos]
 
-    ruta = os.path.join(UPLOAD_FOLDER, "solicitudes.pdf")
-    doc = SimpleDocTemplate(ruta, pagesize=A4)
+    # 🔥 YA NO SE USA UPLOAD_FOLDER
+    buffer = io.BytesIO()
 
+    doc = SimpleDocTemplate(buffer, pagesize=A4)
     estilos = getSampleStyleSheet()
     elementos = []
 
@@ -284,7 +285,7 @@ def exportar_pdf():
     encabezados = ["Nombre", "CURP", "Control", "Especialidad", "Estatus"]
     tabla_datos = [encabezados] + datos
 
-    tabla = Table(tabla_datos)
+    tabla = Table(tabla_datos, repeatRows=1)
     tabla.setStyle(TableStyle([
         ('GRID',(0,0),(-1,-1),0.5,colors.grey),
         ('BACKGROUND',(0,0),(-1,0),colors.HexColor("#621132")),
@@ -294,8 +295,18 @@ def exportar_pdf():
     elementos.append(tabla)
     doc.build(elementos)
 
-    return send_from_directory(UPLOAD_FOLDER, "solicitudes.pdf", as_attachment=True)
+    buffer.seek(0)
 
+    nombre_archivo = "solicitudes.pdf"
+    if estatus:
+        nombre_archivo = f"solicitudes_{estatus}.pdf"
+
+    return send_file(
+        buffer,
+        as_attachment=True,
+        download_name=nombre_archivo,
+        mimetype="application/pdf"
+    )
 
 # ================== EXPORTAR EXCEL ==================
 @app.route('/exportar_excel')
