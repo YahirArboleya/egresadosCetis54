@@ -2,53 +2,74 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Verificación de Requisitos - CETIS 54</title>
+    <title>Verificación de Requisitos | CETIS 54</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/verificacion.css') }}">
 </head>
 <body>
 
+<div class="top-bar"></div>
+
 <div class="container">
 
-    <h1>Trámite de Duplicado de Certificado</h1>
-    <p class="intro">
-        Antes de iniciar el trámite en línea, es importante confirmar que cuentas con los requisitos necesarios.
-    </p>
+    <header class="header">
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo CETIS 54">
+        <h1>Verificación de Requisitos</h1>
+        <p class="subtitle">
+            Trámite de Duplicado de Certificado
+        </p>
+    </header>
 
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <div class="alert">
-            {{ messages[0] }}
-        </div>
-      {% endif %}
-    {% endwith %}
+    <div class="card">
 
-    <form method="POST">
+        <p class="intro">
+            Antes de iniciar el trámite, confirma que cuentas con los requisitos necesarios.
+        </p>
 
-        <div class="question">
-            <p>📄 ¿Cuentas con tus documentos oficiales en formato PDF?</p>
-            <label>
-                <input type="radio" name="documentos" value="si" required>
-                Sí, los tengo listos
-            </label>
-            <label>
-                <input type="radio" name="documentos" value="no">
-                No
-            </label>
-        </div>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="alert">
+                {{ messages[0] }}
+            </div>
+          {% endif %}
+        {% endwith %}
 
-        <button type="submit" class="btn-primary">
-            Continuar
-        </button>
+        <form method="POST">
 
-    </form>
+            <div class="question">
+                <p>¿Cuentas con tus documentos oficiales en formato PDF?</p>
 
-    <p class="nota">
-        Si no cuentas con los documentos necesarios, deberás acudir directamente al plantel.
-    </p>
+                <label class="radio-option">
+                    <input type="radio" name="documentos" value="si" required>
+                    Sí, los tengo listos
+                </label>
+
+                <label class="radio-option">
+                    <input type="radio" name="documentos" value="no">
+                    No
+                </label>
+            </div>
+
+            <div class="actions">
+                <button type="submit" class="btn-primary">
+                    Continuar
+                </button>
+            </div>
+
+        </form>
+
+        <p class="nota">
+            Si no cuentas con los documentos necesarios, deberás acudir directamente al plantel.
+        </p>
+
+    </div>
 
 </div>
+
+<footer class="footer">
+    <p>CETIS 54 · Sistema de Gestión Administrativa</p>
+</footer>
 
 </body>
 </html>

@@ -1,53 +1,131 @@
+/* ===== FONDO GENERAL ===== */
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f4f4f4;
+}
+
+/* ===== BARRA SUPERIOR ===== */
+.top-bar {
+    height: 12px;
+    background: #621132;
+}
+
+/* ===== CONTENEDOR ===== */
 .container {
-    max-width: 700px;
-    margin: 60px auto;
+    max-width: 750px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+/* ===== HEADER ===== */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header img {
+    width: 90px;
+    margin-bottom: 10px;
+}
+
+.header h1 {
+    color: #621132;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    color: #555;
+    font-size: 0.95rem;
+}
+
+/* ===== TARJETA PRINCIPAL ===== */
+.card {
     background: white;
     padding: 30px;
     border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    border-top: 4px solid #621132;
 }
 
+/* ===== TEXTO INTRO ===== */
 .intro {
     margin-bottom: 20px;
     color: #444;
 }
 
+/* ===== PREGUNTA ===== */
 .question {
     margin-bottom: 25px;
 }
 
 .question p {
     font-weight: 600;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
+    color: #333;
 }
 
-.question label {
-    display: flex;            
-    align-items: center;      
-    justify-content: flex-start; 
-    width: fit-content;      
-    gap: 12px;            
-    margin-left: 10px;
+/* ===== RADIO OPTIONS ===== */
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 12px;
     cursor: pointer;
+    font-weight: 500;
 }
 
-.question input[type="radio"] {
-    margin: 0;                
-    width: 18px;              
-    height: 18px;             
-    flex-shrink: 0;           
+.radio-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #621132; /* color institucional */
 }
 
+/* ===== ALERTA ===== */
 .alert {
-    background: #f5a3a3;
-    padding: 10px;
-    border-radius: 5px;
+    background: #fdecea;
+    color: #a10000;
+    padding: 12px;
+    border-radius: 6px;
     margin-bottom: 20px;
     font-weight: 600;
+    border-left: 4px solid #a10000;
 }
 
+/* ===== BOTÓN ===== */
+.actions {
+    text-align: center;
+    margin-top: 25px;
+}
+
+.btn-primary {
+    background: #621132;
+    color: white;
+    padding: 12px 35px;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #4e0f28;
+}
+
+/* ===== NOTA ===== */
 .nota {
     margin-top: 20px;
     font-size: 14px;
     color: #666;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    margin-top: 60px;
+    padding: 20px;
+    text-align: center;
+    background: #621132;
+    color: white;
+    font-size: 0.9rem;
 }
