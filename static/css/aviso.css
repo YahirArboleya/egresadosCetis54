@@ -1,67 +1,143 @@
-/* Contenedor del texto legal */
+/* ===== FONDO GENERAL ===== */
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f4f4f4;
+}
+
+/* ===== BARRA SUPERIOR ===== */
+.top-bar {
+    height: 12px;
+    background: #621132;
+}
+
+/* ===== CONTENEDOR ===== */
+.container {
+    max-width: 850px;
+    margin: 50px auto;
+    padding: 20px;
+}
+
+/* ===== HEADER ===== */
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header img {
+    width: 90px;
+    margin-bottom: 10px;
+}
+
+.header h1 {
+    color: #621132;
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: #555;
+    font-size: 0.95rem;
+}
+
+/* ===== TARJETA ===== */
+.card {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    border-top: 4px solid #621132;
+}
+
+/* ===== TEXTO LEGAL ===== */
 .privacy-content {
     font-size: 14.5px;
     color: #333;
-    line-height: 1.5;
+    line-height: 1.6;
     text-align: justify;
     margin-bottom: 25px;
 }
 
+/* ===== CAJA PDF ===== */
 .privacy-link-container {
-    background-color: #f1f3f5;
-    padding: 15px;
+    background-color: #fafafa;
+    padding: 20px;
     border-radius: 8px;
-    margin-top: 15px;
-    text-align: center;
+    margin-bottom: 25px;
+    border-left: 4px solid #BC955C;
 }
 
-.pdf-link {
-    color: #a51d2d; /* Color guinda institucional opcional */
-    font-weight: bold;
-    text-decoration: underline;
-    font-size: 13px;
+.privacy-link-container h3 {
+    margin-top: 0;
+    color: #621132;
 }
 
-/* Alineación del Checkbox */
+/* ===== BOTÓN PDF ===== */
+.btn-pdf {
+    display: inline-block;
+    margin-top: 10px;
+    background: #BC955C;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.btn-pdf:hover {
+    background: #a8834f;
+}
+
+/* ===== CHECKBOX ===== */
 .check {
     display: flex;
-    align-items: center; /* Alinea el cuadro con el texto */
-    margin-top: 25px;
-    margin-bottom: 20px;
+    align-items: center;
+    gap: 10px;
     font-weight: 600;
+    margin-bottom: 20px;
     cursor: pointer;
 }
 
 .check input[type="checkbox"] {
-    width: 20px;
-    height: 20px;
-    margin-right: 12px;
-    cursor: pointer;
+    width: 18px;
+    height: 18px;
+    accent-color: #621132;
 }
 
-/* Botón de acción */
+/* ===== BOTÓN PRINCIPAL ===== */
 .btn-primary {
     width: 100%;
     padding: 12px;
-    background-color: #007bff;
+    background: #621132;
     color: white;
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: bold;
+    border-radius: 6px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: 0.3s ease;
 }
 
 .btn-primary:hover {
-    background-color: #0056b3;
+    background: #4e0f28;
 }
 
-.error {
-    color: #d93025;
-    background: #fce8e6;
-    padding: 10px;
-    border-radius: 4px;
+/* ===== ALERTA ===== */
+.alert {
+    background: #fdecea;
+    color: #a10000;
+    padding: 12px;
+    border-radius: 6px;
     margin-top: 15px;
-    font-size: 14px;
+    font-weight: 600;
+    border-left: 4px solid #a10000;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+    margin-top: 60px;
+    padding: 20px;
+    text-align: center;
+    background: #621132;
+    color: white;
+    font-size: 0.9rem;
 }
