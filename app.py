@@ -23,6 +23,9 @@ from openpyxl import Workbook
 from dotenv import load_dotenv
 load_dotenv()
 
+from werkzeug.security import check_password_hash
+
+
 # ================== APP ==================
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
@@ -34,10 +37,6 @@ app.config['MYSQL_PASSWORD'] = os.getenv("DB_PASSWORD")
 app.config['MYSQL_DB'] = os.getenv("DB_NAME")
 
 mysql = MySQL(app)
-
-# ================== CONFIG GENERAL ==================
-ADMIN_USER = "admin"
-ADMIN_PASS = "cetis54"
 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'pdf'}
@@ -168,11 +167,24 @@ def registrar():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        if request.form['usuario'] == ADMIN_USER and request.form['password'] == ADMIN_PASS:
+
+        usuario = request.form['usuario']
+        password = request.form['password']
+
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT id, password_hash FROM admins WHERE usuario=%s", (usuario,))
+        admin = cur.fetchone()
+        cur.close()
+
+        if admin and check_password_hash(admin[1], password):
             session['admin'] = True
+            session['admin_id'] = admin[0]
             return redirect(url_for('admin_panel'))
+
         flash("Credenciales incorrectas")
+
     return render_template('login.html')
+
 
 @app.route('/logout')
 def logout():
