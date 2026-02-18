@@ -123,16 +123,24 @@ def registrar():
 
     file_pago = request.files['file_pago']
     file_escolar = request.files['file_escolar']
+    file_curp = request.files['file_curp']
 
-    if not (allowed_file(file_pago.filename) and allowed_file(file_escolar.filename)):
+    if not (
+    allowed_file(file_pago.filename) and
+    allowed_file(file_escolar.filename) and
+    allowed_file(file_curp.filename)
+    ):
         flash("Archivos inválidos")
         return redirect(url_for('formulario'))
 
     nom_pago = secure_filename(f"{curp}_PAGO.pdf")
     nom_escolar = secure_filename(f"{curp}_ESCOLAR.pdf")
+    nom_curp = secure_filename(f"{curp}_CURP.pdf")
 
     file_pago.save(os.path.join(UPLOAD_FOLDER, nom_pago))
     file_escolar.save(os.path.join(UPLOAD_FOLDER, nom_escolar))
+    file_curp.save(os.path.join(UPLOAD_FOLDER, nom_curp))
+
 
     cur = mysql.connection.cursor()
 
@@ -143,19 +151,20 @@ def registrar():
         return redirect(url_for('formulario'))
 
     cur.execute("""
-        INSERT INTO solicitudes (
-            apellido_paterno, apellido_materno, nombre_completo,
-            curp, numero_control, especialidad, turno, generacion,
-            correo_electronico, telefono_celular,
-            banco_pago, llave_pago, monto_pago,
-            ruta_pdf_pago, ruta_pdf_escolar, estatus_tramite
-        ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'Pendiente')
+    INSERT INTO solicitudes (
+        apellido_paterno, apellido_materno, nombre_completo,
+        curp, numero_control, especialidad, turno, generacion,
+        correo_electronico, telefono_celular,
+        banco_pago, llave_pago, monto_pago,
+        ruta_pdf_pago, ruta_pdf_escolar, ruta_pdf_curp, estatus_tramite
+    ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,'Pendiente')
     """, (
-        paterno, materno, nombre_completo,
-        curp, control, especialidad, turno, generacion,
-        correo, telefono, banco, llave, monto,
-        nom_pago, nom_escolar
+    paterno, materno, nombre_completo,
+    curp, control, especialidad, turno, generacion,
+    correo, telefono, banco, llave, monto,
+    nom_pago, nom_escolar, nom_curp
     ))
+
 
     mysql.connection.commit()
     cur.close()
@@ -208,21 +217,28 @@ def admin_panel():
     if estatus:
         cur.execute("""
             SELECT id, nombre_completo, curp, numero_control,
-                   especialidad, ruta_pdf_pago, ruta_pdf_escolar, estatus_tramite
+                   especialidad, ruta_pdf_pago, ruta_pdf_escolar, ruta_pdf_curp, estatus_tramite
             FROM solicitudes WHERE estatus_tramite=%s
             ORDER BY fecha_registro DESC
         """, (estatus,))
     else:
         cur.execute("""
             SELECT id, nombre_completo, curp, numero_control,
-                   especialidad, ruta_pdf_pago, ruta_pdf_escolar, estatus_tramite
+                   especialidad, ruta_pdf_pago, ruta_pdf_escolar, ruta_pdf_curp, estatus_tramite
             FROM solicitudes ORDER BY fecha_registro DESC
         """)
 
-    datos = cur.fetchall()
+    columnas = [col[0] for col in cur.description]
+    resultados = cur.fetchall()
     cur.close()
 
-    return render_template("admin.html", solicitudes=datos, contadores=contadores, estatus=estatus)
+    solicitudes = [dict(zip(columnas, fila)) for fila in resultados]
+
+    return render_template("admin.html",
+                       solicitudes=solicitudes,
+                       contadores=contadores,
+                       estatus=estatus)
+
 
 # ================== ACTUALIZAR ESTATUS ==================
 @app.route('/actualizar_estatus', methods=['POST'])
@@ -239,6 +255,40 @@ def actualizar_estatus():
     cur.close()
 
     return redirect(url_for('admin_panel'))
+
+# ================== ELIMINAR SOLICITUD ==================
+@app.route('/eliminar_solicitud', methods=['POST'])
+def eliminar_solicitud():
+    if not session.get('admin'):
+        return redirect(url_for('login'))
+
+    id_solicitud = request.form['id']
+    cur = mysql.connection.cursor()
+
+    # Obtener rutas de archivos
+    cur.execute("""
+        SELECT ruta_pdf_pago, ruta_pdf_escolar, ruta_pdf_curp
+        FROM solicitudes
+        WHERE id = %s
+    """, (id_solicitud,))
+
+    archivos = cur.fetchone()
+
+    if archivos:
+        for archivo in archivos:
+            if archivo:
+                ruta = os.path.join(UPLOAD_FOLDER, archivo)
+                if os.path.exists(ruta):
+                    os.remove(ruta)
+
+    # Eliminar registro
+    cur.execute("DELETE FROM solicitudes WHERE id = %s", (id_solicitud,))
+    mysql.connection.commit()
+    cur.close()
+
+    flash("Solicitud eliminada correctamente")
+    return redirect(url_for('admin_panel'))
+
 
 # ================== DESCARGAR ARCHIVOS ==================
 @app.route('/uploads/<filename>')

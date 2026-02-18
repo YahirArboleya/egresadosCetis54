@@ -77,44 +77,60 @@
                     <th>CURP</th>
                     <th>Control</th>
                     <th>Documentos</th>
+                    <th>CURP PDF</th>
                     <th>Estatus</th>
                     <th>Acción</th>
                 </tr>
             </thead>
             <tbody>
-                {% for sol in solicitudes %}
-                <tr>
-                    <td>{{ sol[1] }}</td>
-                    <td>{{ sol[2] }}</td>
-                    <td>{{ sol[3] }}</td>
-                    <td>
-                        <a href="/uploads/{{ sol[5] }}" target="_blank" class="btn-descarga">Váucher</a>
-                        <a href="/uploads/{{ sol[6] }}" target="_blank" class="btn-descarga">Académico</a>
-                    </td>
-                    <td>
-                        <span class="badge 
-                        {% if sol[7]=='Pendiente' %}badge-pendiente
-                        {% elif sol[7]=='En revisión' %}badge-revision
-                        {% elif sol[7]=='Aprobado' %}badge-aprobado
-                        {% elif sol[7]=='Rechazado' %}badge-rechazado
-                        {% endif %}">
-                            {{ sol[7] }}
-                        </span>
-                    </td>
-                    <td>
-                        <form action="/actualizar_estatus" method="POST">
-                            <input type="hidden" name="id" value="{{ sol[0] }}">
-                            <select name="estatus" onchange="this.form.submit()">
-                                <option value="Pendiente" {% if sol[7]=='Pendiente' %}selected{% endif %}>Pendiente</option>
-                                <option value="En revisión" {% if sol[7]=='En revisión' %}selected{% endif %}>En revisión</option>
-                                <option value="Aprobado" {% if sol[7]=='Aprobado' %}selected{% endif %}>Aprobado</option>
-                                <option value="Rechazado" {% if sol[7]=='Rechazado' %}selected{% endif %}>Rechazado</option>
-                            </select>
-                        </form>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
+{% for sol in solicitudes %}
+<tr>
+    <td>{{ sol.nombre_completo }}</td>
+    <td>{{ sol.curp }}</td>
+    <td>{{ sol.numero_control }}</td>
+
+    <td>
+        <a href="/uploads/{{ sol.ruta_pdf_pago }}" target="_blank" class="btn-descarga">Váucher</a>
+        <a href="/uploads/{{ sol.ruta_pdf_escolar }}" target="_blank" class="btn-descarga">Académico</a>
+    </td>
+
+    <td>
+        <a href="/uploads/{{ sol.ruta_pdf_curp }}" target="_blank" class="btn-descarga">CURP</a>
+    </td>
+
+    <td>
+        <span class="badge 
+        {% if sol.estatus_tramite=='Pendiente' %}badge-pendiente
+        {% elif sol.estatus_tramite=='En revisión' %}badge-revision
+        {% elif sol.estatus_tramite=='Aprobado' %}badge-aprobado
+        {% elif sol.estatus_tramite=='Rechazado' %}badge-rechazado
+        {% endif %}">
+            {{ sol.estatus_tramite }}
+        </span>
+    </td>
+
+    <td>
+        <form action="/actualizar_estatus" method="POST">
+            <input type="hidden" name="id" value="{{ sol.id }}">
+            <select name="estatus" onchange="this.form.submit()">
+                <option value="Pendiente" {% if sol.estatus_tramite=='Pendiente' %}selected{% endif %}>Pendiente</option>
+                <option value="En revisión" {% if sol.estatus_tramite=='En revisión' %}selected{% endif %}>En revisión</option>
+                <option value="Aprobado" {% if sol.estatus_tramite=='Aprobado' %}selected{% endif %}>Aprobado</option>
+                <option value="Rechazado" {% if sol.estatus_tramite=='Rechazado' %}selected{% endif %}>Rechazado</option>
+            </select>
+        </form>
+
+        <form action="/eliminar_solicitud" method="POST"
+              onsubmit="return confirm('¿Seguro que deseas eliminar esta solicitud?');">
+            <input type="hidden" name="id" value="{{ sol.id }}">
+            <button type="submit" class="btn-eliminar">Eliminar</button>
+        </form>
+    </td>
+</tr>
+{% endfor %}
+</tbody>
+
+
         </table>
     </div>
 
