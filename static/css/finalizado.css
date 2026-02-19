@@ -1,0 +1,109 @@
+/* ========================= */
+/* ESTRUCTURA PARA FOOTER ABAJO */
+/* ========================= */
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    flex: 1;
+}
+
+
+
+
+/* ========================= */
+/* CONTENEDOR PRINCIPAL */
+/* ========================= */
+
+.success {
+    text-align: center;
+    border-left: 6px solid #2e7d32;
+    background: #f4fbf6;
+    padding: 40px 30px;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+    animation: fadeIn 0.6s ease-in-out;
+}
+
+/* ========================= */
+/* TÍTULO */
+/* ========================= */
+
+.success h1 {
+    color: #2e7d32;
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+/* ========================= */
+/* TEXTO */
+/* ========================= */
+
+.success p {
+    font-size: 16px;
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: #444;
+}
+
+/* ========================= */
+/* BOTÓN */
+/* ========================= */
+
+.btn-primary {
+    display: inline-block;
+    padding: 12px 28px;
+    background-color: #621132; /* Color institucional */
+    color: #fff;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: #4a0d25;
+    transform: translateY(-2px);
+}
+
+/* ========================= */
+/* ANIMACIÓN */
+/* ========================= */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========================= */
+/* FOOTER SOLO FINALIZADO */
+/* ========================= */
+
+.footer {
+    width: 100%;
+    background: #621132;
+    color: #ffffff;
+    text-align: center;
+    padding: 18px 10px;
+    margin-top: auto;
+}
+
+.footer p {
+    margin: 0;
+}
+    

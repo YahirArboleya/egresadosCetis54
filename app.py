@@ -170,7 +170,14 @@ def registrar():
     cur.close()
 
     flash("Solicitud registrada correctamente")
-    return redirect(url_for('formulario'))
+    return redirect(url_for('finalizado'))
+
+
+# ================== FINALIZADO ==================
+@app.route('/finalizado')
+def finalizado():
+    return render_template('finalizado.html')
+
 
 # ================== LOGIN ==================
 @app.route('/login', methods=['GET', 'POST'])

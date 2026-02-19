@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Solicitud Enviada | CETIS 54</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/finalizado.css') }}">
+
+</head>
+<body>
+
+<div class="top-bar"></div>
+
+<div class="container">
+
+    <section class="card success">
+        <h1>✅ Solicitud enviada correctamente</h1>
+
+        <p>
+            Gracias por completar el formulario para el trámite de 
+            <strong>Duplicado de Certificado</strong>.
+        </p>
+
+        <p>
+            Tu solicitud ha sido registrada exitosamente en el sistema.
+            El área administrativa revisará la documentación y actualizará
+            el estatus correspondiente.
+        </p>
+
+        <p>
+            Puedes comunicarte al plantel en caso de requerir información adicional.
+        </p>
+
+        <div class="actions">
+            <a href="{{ url_for('home') }}" class="btn-primary">
+                Volver al inicio
+            </a>
+        </div>
+    </section>
+
+</div>
+
+<footer class="footer">
+    <p>CETIS 54 · Sistema de Egresados</p>
+</footer>
+
+</body>
+</html>
